@@ -1,19 +1,21 @@
 local Player = PlayerId()
 
+SetPoliceIgnorePlayer(Player, true)
+SetEveryoneIgnorePlayer(Player, true)
+SetPlayerCanBeHassledByGangs(Player, false)
+SetIgnoreLowPriorityShockingEvents(Player, true)
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
-        
-        SetPoliceIgnorePlayer(Player, true)
-        SetEveryoneIgnorePlayer(Player, true)
-        SetPlayerCanBeHassledByGangs(Player, false)
-        SetIgnoreLowPriorityShockingEvents(Player, true)
 
         for key,pedNpc in pairs(GetAllPeds()) do
             SetBlockingOfNonTemporaryEvents(pedNpc,true)
             SetPedFleeAttributes(pedNpc, 0, 0)
             SetPedCombatAttributes(pedNpc, 17, 1)
-            SetPedAlertness(pedNpc,0)
+            if(GetPedAlertness(pedNpc) ~= 0) then
+                SetPedAlertness(pedNpc,0)
+            end
         end
     end
 end)
@@ -47,7 +49,7 @@ end
 function GetAllPeds()
     local peds = {}
     for ped in EnumeratePeds() do
-        if DoesEntityExist(ped) then
+        if DoesEntityExist(ped) and not IsEntityDead(ped) and IsEntityAPed(ped) and IsPedHuman(ped) and not IsPedAPlayer(ped) then
             table.insert(peds, ped)
         end
     end
