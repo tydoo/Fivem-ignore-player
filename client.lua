@@ -7,8 +7,6 @@ SetIgnoreLowPriorityShockingEvents(Player, true)
 
 Citizen.CreateThread(function()
     while true do
-        Citizen.Wait(0)
-
         for key,pedNpc in pairs(GetAllPeds()) do
             SetBlockingOfNonTemporaryEvents(pedNpc,true)
             SetPedFleeAttributes(pedNpc, 0, 0)
@@ -17,6 +15,7 @@ Citizen.CreateThread(function()
                 SetPedAlertness(pedNpc,0)
             end
         end
+        Citizen.Wait(0)
     end
 end)
 
